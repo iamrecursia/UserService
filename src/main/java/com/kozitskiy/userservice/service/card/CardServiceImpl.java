@@ -50,7 +50,6 @@ public class CardServiceImpl implements CardService{
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Card not found with id: " + id));
         return cardMapper.toDto(card);
-
     }
 
     @Override
