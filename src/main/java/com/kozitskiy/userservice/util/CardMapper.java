@@ -1,10 +1,8 @@
 package com.kozitskiy.userservice.util;
 
-import com.kozitskiy.userservice.dto.CardResponseDto;
-import com.kozitskiy.userservice.dto.CreateCardDto;
-import com.kozitskiy.userservice.dto.CreateUserDto;
+import com.kozitskiy.userservice.dto.response.CardResponseDto;
+import com.kozitskiy.userservice.dto.request.CreateCardDto;
 import com.kozitskiy.userservice.entity.Card;
-import com.kozitskiy.userservice.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

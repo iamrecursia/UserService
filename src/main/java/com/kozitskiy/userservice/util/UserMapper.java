@@ -1,11 +1,10 @@
 package com.kozitskiy.userservice.util;
 
-import com.kozitskiy.userservice.dto.CreateUserDto;
-import com.kozitskiy.userservice.dto.UserResponseDto;
+import com.kozitskiy.userservice.dto.request.CreateUserDto;
+import com.kozitskiy.userservice.dto.response.UserResponseDto;
 import com.kozitskiy.userservice.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-
 import java.util.List;
 
 @Mapper(componentModel = "spring")

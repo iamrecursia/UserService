@@ -1,7 +1,7 @@
 package com.kozitskiy.userservice.service.user;
 
-import com.kozitskiy.userservice.dto.CreateUserDto;
-import com.kozitskiy.userservice.dto.UserResponseDto;
+import com.kozitskiy.userservice.dto.request.CreateUserDto;
+import com.kozitskiy.userservice.dto.response.UserResponseDto;
 
 import java.util.List;
 

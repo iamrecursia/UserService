@@ -1,8 +1,7 @@
 package com.kozitskiy.userservice.service.card;
 
-import com.kozitskiy.userservice.dto.CardResponseDto;
-import com.kozitskiy.userservice.dto.CreateCardDto;
-import com.kozitskiy.userservice.entity.Card;
+import com.kozitskiy.userservice.dto.response.CardResponseDto;
+import com.kozitskiy.userservice.dto.request.CreateCardDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,4 +11,5 @@ public interface CardService {
     CardResponseDto getCardById(long id);
     Page<CardResponseDto> getAllCards(Pageable pageable);
     void deleteCardById(long id);
+    Page<CardResponseDto> getCardsByUserId(long userId, Pageable pageable);
 }

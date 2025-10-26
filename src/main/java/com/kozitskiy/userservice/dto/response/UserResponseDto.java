@@ -1,4 +1,4 @@
-package com.kozitskiy.userservice.dto;
+package com.kozitskiy.userservice.dto.response;
 
 import lombok.Data;
 

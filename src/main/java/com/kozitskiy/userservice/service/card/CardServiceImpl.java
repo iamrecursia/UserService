@@ -1,9 +1,10 @@
 package com.kozitskiy.userservice.service.card;
 
-import com.kozitskiy.userservice.dto.CardResponseDto;
-import com.kozitskiy.userservice.dto.CreateCardDto;
+import com.kozitskiy.userservice.dto.response.CardResponseDto;
+import com.kozitskiy.userservice.dto.request.CreateCardDto;
 import com.kozitskiy.userservice.entity.Card;
 import com.kozitskiy.userservice.entity.User;
+import com.kozitskiy.userservice.exception.CardNotFoundException;
 import com.kozitskiy.userservice.repository.CardRepository;
 import com.kozitskiy.userservice.repository.UserRepository;
 import com.kozitskiy.userservice.util.CardMapper;
@@ -25,7 +26,7 @@ public class CardServiceImpl implements CardService{
     @Transactional
     public CardResponseDto createCard(CreateCardDto cardDto) {
         User user = userRepository.findById(cardDto.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + cardDto.getUserId()));
+                .orElseThrow(() -> new CardNotFoundException("User not found with id: " + cardDto.getUserId()));
 
         Card card = cardMapper.toEntity(cardDto);
         card.setUser(user);
@@ -37,7 +38,7 @@ public class CardServiceImpl implements CardService{
     @Override
     public CardResponseDto updateCard(long id, CreateCardDto dto) {
         Card card = cardRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Card not found with id: " + id));
+                () -> new CardNotFoundException("Card not found with id: " + id));
 
         cardMapper.updateFromDto(dto, card);
         Card updated = cardRepository.save(card);
@@ -48,7 +49,7 @@ public class CardServiceImpl implements CardService{
     @Override
     public CardResponseDto getCardById(long id) {
         Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Card not found with id: " + id));
+                .orElseThrow(() -> new CardNotFoundException("Card not found with id: " + id));
         return cardMapper.toDto(card);
     }
 
@@ -62,8 +63,14 @@ public class CardServiceImpl implements CardService{
     @Transactional
     public void deleteCardById(long id) {
         if (!cardRepository.existsById(id)){
-            throw new EntityNotFoundException("Card not found with id: " + id);
+            throw new CardNotFoundException("Card not found with id: " + id);
         }
         cardRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<CardResponseDto> getCardsByUserId(long userId, Pageable pageable) {
+        Page<Card> cards = cardRepository.findCardsByUserIdNative(userId, pageable);
+        return cards.map(cardMapper::toDto);
     }
 }
