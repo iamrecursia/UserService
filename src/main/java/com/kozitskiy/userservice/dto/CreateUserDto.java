@@ -1,5 +1,6 @@
 package com.kozitskiy.userservice.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,8 +9,18 @@ import java.util.Date;
 @Data
 @Builder
 public class CreateUserDto {
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     private String name;
+
+    @NotBlank(message = "Surname is required")
     private String surname;
+
+    @NotNull(message = "Birth date is required")
+    @Past(message = "Birth date must be in the past")
     private Date birthDate;
+
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is required")
     private String email;
 }
