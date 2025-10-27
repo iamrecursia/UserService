@@ -10,6 +10,7 @@ import java.util.Date;
 
 @Table(name = "card_info")
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

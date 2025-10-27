@@ -12,6 +12,7 @@ import java.util.Date;
 
 @Table(name = "users")
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

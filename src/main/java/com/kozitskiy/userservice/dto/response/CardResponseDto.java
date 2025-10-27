@@ -1,13 +1,12 @@
-package com.kozitskiy.userservice.dto;
+package com.kozitskiy.userservice.dto.response;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-@Builder
-public class CreateCardDto {
+public class CardResponseDto {
+    private Long id;
     private Long userId;
     private String number;
     private String holder;
