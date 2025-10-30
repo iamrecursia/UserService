@@ -42,7 +42,8 @@ public class CardController {
         return ResponseEntity.ok(card);
     }
 
-    public ResponseEntity<Page<CardResponseDto>> getCardsByUserId(long userId, Pageable pageable){
+    @GetMapping("/{userId}/by")
+    public ResponseEntity<Page<CardResponseDto>> getCardsByUserId(@PathVariable Long userId, Pageable pageable){
         Page<CardResponseDto> cards = cardService.getCardsByUserId(userId, pageable);
         return ResponseEntity.ok(cards);
     }
@@ -53,3 +54,15 @@ public class CardController {
         return ResponseEntity.noContent().build();
     }
 }
+
+/*
+
+{
+  "name": "John",
+  "surname": "Biden",
+  "birthDate": "1990-05-15T00:00:00",
+  "email": "john.doe@example.com"
+}
+
+
+ */
