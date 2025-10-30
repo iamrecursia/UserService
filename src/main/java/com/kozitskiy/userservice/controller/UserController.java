@@ -2,8 +2,7 @@ package com.kozitskiy.userservice.controller;
 
 import com.kozitskiy.userservice.dto.request.CreateUserDto;
 import com.kozitskiy.userservice.dto.response.UserResponseDto;
-import com.kozitskiy.userservice.entity.User;
-import com.kozitskiy.userservice.repository.UserRepository;
+import com.kozitskiy.userservice.dto.response.UserWithCardResponseDto;
 import com.kozitskiy.userservice.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +52,11 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable String email){
         UserResponseDto user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/{id}/with-cards")
+    public ResponseEntity<UserWithCardResponseDto> getUserWithCards(@PathVariable long id){
+        UserWithCardResponseDto userWithCards = userService.getUserWithCards(id);
+        return ResponseEntity.ok(userWithCards);
     }
 }
