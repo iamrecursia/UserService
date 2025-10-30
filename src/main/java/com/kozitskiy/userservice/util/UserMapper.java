@@ -1,24 +1,18 @@
 package com.kozitskiy.userservice.util;
 
-import com.kozitskiy.userservice.dto.CreateUserDto;
-import com.kozitskiy.userservice.dto.UpdateUserDto;
+import com.kozitskiy.userservice.dto.request.CreateUserDto;
+import com.kozitskiy.userservice.dto.response.UserResponseDto;
 import com.kozitskiy.userservice.entity.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import java.util.List;
 
-public class UserMapper {
-    public static User toEntity(CreateUserDto dto){
-        return  User.builder()
-                .name(dto.getName())
-                .surname(dto.getSurname())
-                .email(dto.getEmail())
-                .birthDate(dto.getBirthDate())
-                .build();
-    }
+@Mapper(componentModel = "spring")
+public interface UserMapper {
+   User toEntity(CreateUserDto dto);
+   List<UserResponseDto> toDtoList(List<User> user);
 
-    public static User toEntity(UpdateUserDto dto, User existing) {
-        existing.setName(dto.getName());
-        existing.setSurname(dto.getSurname());
-        existing.setEmail(dto.getEmail());
-        existing.setBirthDate(dto.getBirthDate());
-        return existing;
-    }
+   UserResponseDto toDto(User user);
+
+   void updateFromDto(CreateUserDto dto, @MappingTarget User user);
 }

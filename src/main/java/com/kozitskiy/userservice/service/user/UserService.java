@@ -1,21 +1,18 @@
 package com.kozitskiy.userservice.service.user;
 
-import com.kozitskiy.userservice.dto.CreateUserDto;
-import com.kozitskiy.userservice.dto.UpdateUserDto;
-import com.kozitskiy.userservice.entity.User;
+import com.kozitskiy.userservice.dto.request.CreateUserDto;
+import com.kozitskiy.userservice.dto.response.UserResponseDto;
+import com.kozitskiy.userservice.dto.response.UserWithCardResponseDto;
 
 import java.util.List;
 
 public interface UserService {
-    User createUser(CreateUserDto userDao);
-
-    User getUserById(long id);
-
-    List<User> getAllUsers();
-
-    User getUserByEmail(String email);
-
-    User updateUserById(long id, UpdateUserDto dto);
-
+    UserResponseDto createUser(CreateUserDto userDao);
+    UserResponseDto getUserById(long id);
+    List<UserResponseDto> getAllUsers();
+    UserResponseDto getUserByEmail(String email);
+    UserResponseDto updateUserById(long id, CreateUserDto dto);
     void deleteUserById(long id);
+    UserWithCardResponseDto getUserWithCards(long userId);
+    void evictUserWithCardsCache(long userId);
 }
