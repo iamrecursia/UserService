@@ -1,4 +1,4 @@
-package com.kozitskiy.userservice.unit;
+package com.kozitskiy.userservice.unit.service;
 
 import com.kozitskiy.userservice.dto.request.CreateCardDto;
 import com.kozitskiy.userservice.dto.response.CardResponseDto;
@@ -9,7 +9,6 @@ import com.kozitskiy.userservice.repository.CardRepository;
 import com.kozitskiy.userservice.repository.UserRepository;
 import com.kozitskiy.userservice.service.card.CardServiceImpl;
 import com.kozitskiy.userservice.service.user.UserService;
-import com.kozitskiy.userservice.service.user.UserServiceImpl;
 import com.kozitskiy.userservice.util.CardMapper;
 import com.kozitskiy.userservice.util.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -176,7 +175,7 @@ public class CardServiceImplTest {
         CardResponseDto dto2 = new CardResponseDto();
         dto2.setId(2L);
 
-        when(cardRepository.findCardsByUserIdNative(userId, pageable))
+        when(cardRepository.findCardsByUserId(userId, pageable))
                 .thenReturn(cardPage);
         when(cardMapper.toDto(card1)).thenReturn(dto1);
         when(cardMapper.toDto(card2)).thenReturn(dto2);
@@ -186,7 +185,7 @@ public class CardServiceImplTest {
         assertThat(result).hasSize(2);
         assertThat(result.getContent()).containsExactly(dto1, dto2);
         assertThat(result.getPageable()).isEqualTo(pageable);
-        verify(cardRepository).findCardsByUserIdNative(userId, pageable);
+        verify(cardRepository).findCardsByUserId(userId, pageable);
         verify(cardMapper).toDto(card1);
         verify(cardMapper).toDto(card2);
     }

@@ -1,4 +1,4 @@
-package com.kozitskiy.userservice.unit;
+package com.kozitskiy.userservice.unit.service;
 
 import com.kozitskiy.userservice.dto.request.CreateUserDto;
 import com.kozitskiy.userservice.dto.response.CardResponseDto;
@@ -153,7 +153,7 @@ public class UserServiceImplTest {
                 .build();
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(cardRepository.findCardsByUserIdNative(userId, Pageable.unpaged()))
+        when(cardRepository.findCardsByUserId(userId, Pageable.unpaged()))
                 .thenReturn(new PageImpl<>(cards));
         when(userMapper.toDto(user)).thenReturn(userDto);
         when(cardMapper.toDtoList(cards)).thenReturn(cardDtos);
@@ -162,7 +162,7 @@ public class UserServiceImplTest {
 
         assertThat(result).usingRecursiveComparison().isEqualTo(expectedResponse);
         verify(userRepository).findById(userId);
-        verify(cardRepository).findCardsByUserIdNative(userId, Pageable.unpaged());
+        verify(cardRepository).findCardsByUserId(userId, Pageable.unpaged());
         verify(userMapper).toDto(user);
         verify(cardMapper).toDtoList(cards);
     }
@@ -177,7 +177,7 @@ public class UserServiceImplTest {
                 .hasMessage("User not found with id: " + userId);
 
         verify(userRepository).findById(userId);
-        verify(cardRepository, never()).findCardsByUserIdNative(anyLong(), any());
+        verify(cardRepository, never()).findCardsByUserId(anyLong(), any());
         verify(userMapper, never()).toDto(any());
         verify(cardMapper, never()).toDtoList(any());
     }
@@ -280,26 +280,26 @@ public class UserServiceImplTest {
         responseDto.setName("Alice");
         responseDto.setEmail(email);
 
-        when(userRepository.findByEmailNative(email)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(userMapper.toDto(user)).thenReturn(responseDto);
 
         UserResponseDto result = userService.getUserByEmail(email);
 
         assertThat(result).usingRecursiveComparison().isEqualTo(responseDto);
-        verify(userRepository).findByEmailNative(email);
+        verify(userRepository).findByEmail(email);
         verify(userMapper).toDto(user);
     }
 
     @Test
     void getUserByEmail_shouldThrowUserNotFoundException_whenUserDoesNotExist() {
         String email = "notfound@example.com";
-        when(userRepository.findByEmailNative(email)).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.getUserByEmail(email))
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessage("User not found with email: " + email);
 
-        verify(userRepository).findByEmailNative(email);
+        verify(userRepository).findByEmail(email);
         verify(userMapper, never()).toDto(any());
     }
 
