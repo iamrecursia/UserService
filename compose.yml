@@ -1,4 +1,22 @@
+# docker-compose.yml
+version: '3.8'
+
 services:
+  app:
+    build: .
+    container_name: user-service-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - app-network
+
   redis:
     image: redis:7.2
     container_name: redis-local
@@ -6,8 +24,8 @@ services:
       - "6379:6379"
     volumes:
       - cache:/data
-#    command:
-#      - redis-server --save 20 1 --loglevel warning --requirepass c2Zkc2Rmc2d3ZQ==
+    networks:
+      - app-network
 
   mysql:
     image: mysql:8.0
@@ -15,6 +33,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: mysql
       MYSQL_DATABASE: user_service
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: securepass
     ports:
       - "3306:3306"
     volumes:
@@ -23,10 +43,14 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
+    networks:
+      - app-network
 
 volumes:
   cache:
     driver: local
   mysql_data:
-#docker compose up -d
-#docker compose down, если использовать -v стирается том
+
+networks:
+  app-network:
+    driver: bridge
