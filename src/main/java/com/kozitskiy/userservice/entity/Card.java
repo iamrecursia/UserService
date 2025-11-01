@@ -6,20 +6,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Table(name = "card_info")
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Card {
+public class Card implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private String number;
@@ -27,5 +30,5 @@ public class Card {
     private String holder;
 
     @Column(name = "expiration_date")
-    private Date expirationDate;
+    private LocalDate expirationDate;
 }
