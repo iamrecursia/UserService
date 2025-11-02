@@ -93,7 +93,10 @@ public class UserServiceImpl implements UserService{
             @CacheEvict(value = USER_BY_EMAIL_CACHE, allEntries = true)
     })
     public void deleteUserById(long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id)
+                        .orElseThrow(() -> new UserNotFoundException("User with id: "+ id+ " not found"));
+        long userId = user.getId();
+        userRepository.deleteById(userId);
     }
 
     @Override

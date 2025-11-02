@@ -1,13 +1,17 @@
 package com.kozitskiy.userservice.dto.request;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateCardDto {
 
     @NotNull(message = "User ID is required")

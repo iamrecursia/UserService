@@ -9,7 +9,6 @@ import com.kozitskiy.userservice.repository.CardRepository;
 import com.kozitskiy.userservice.repository.UserRepository;
 import com.kozitskiy.userservice.service.user.UserService;
 import com.kozitskiy.userservice.util.CardMapper;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -58,7 +57,7 @@ public class CardServiceImpl implements CardService{
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = CARD_BY_ID_CACHE, key = "#id", sync = true)
+//    @Cacheable(value = CARD_BY_ID_CACHE, key = "#id", sync = true)
     public CardResponseDto getCardById(long id) {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card not found with id: " + id));
@@ -85,7 +84,7 @@ public class CardServiceImpl implements CardService{
 
     @Override
     public Page<CardResponseDto> getCardsByUserId(long userId, Pageable pageable) {
-        Page<Card> cards = cardRepository.findCardsByUserIdNative(userId, pageable);
+        Page<Card> cards = cardRepository.findCardsByUserId(userId, pageable);
         return cards.map(cardMapper::toDto);
     }
 }
