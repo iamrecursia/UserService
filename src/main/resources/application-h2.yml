@@ -1,0 +1,11 @@
+# Используем встроенную H2-БД только для тестов
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# Отключить реальные миграции Liquibase (если используешь)
+# spring.liquibase.enabled=false
+
+# Или, если хочешь, чтобы Liquibase применял миграции к H2:
+spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
