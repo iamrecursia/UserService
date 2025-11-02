@@ -6,7 +6,30 @@ jobs:
   build-test-analyze-package:
 
     runs-on: ubuntu-latest
-    
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: testpass
+          MYSQL_DATABASE: user_service
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -p$$MYSQL_ROOT_PASSWORD"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,6 +43,12 @@ jobs:
         run: mvn clean package -DskipTests
 
       - name: Run Tests
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/user_service
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: testpass
+          SPRING_REDIS_HOST: localhost
+          SPRING_REDIS_PORT: 6379
         run: mvn test
 
       - name: SonarQube Scan
