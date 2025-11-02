@@ -36,10 +36,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    @Caching(put = {
-            @CachePut(value = USER_BY_ID_CACHE, key = "#result.id"),
-            @CachePut(value = USER_BY_EMAIL_CACHE, key = "#result.email"),
-    })
+//    @Caching(put = {
+//            @CachePut(value = USER_BY_ID_CACHE, key = "#result.id"),
+//            @CachePut(value = USER_BY_EMAIL_CACHE, key = "#result.email"),
+//    })
     public UserResponseDto createUser(CreateUserDto userDto) {
         User user = userMapper.toEntity(userDto);
         User saved = userRepository.save(user);
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = USER_BY_ID_CACHE, key = "#id", sync = true)
+//    @Cacheable(value = USER_BY_ID_CACHE, key = "#id", sync = true)
     public UserResponseDto getUserById(long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id = " + id + " not found"));
@@ -62,21 +62,21 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = USER_BY_EMAIL_CACHE, key = "#email", sync = true)
+//    @Cacheable(value = USER_BY_EMAIL_CACHE, key = "#email", sync = true)
     public UserResponseDto getUserByEmail(String email) {
-        User user = userRepository.findByEmailNative(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
         return userMapper.toDto(user);
     }
 
     @Override
     @Transactional
-    @Caching(put = {
-            @CachePut(value = USER_BY_ID_CACHE, key = "#id"),
-    }, evict = {
-            @CacheEvict(value = USER_WITH_CARDS_CACHE, key = "#id")
-    }
-    )
+//    @Caching(put = {
+//            @CachePut(value = USER_BY_ID_CACHE, key = "#id"),
+//    }, evict = {
+//            @CacheEvict(value = USER_WITH_CARDS_CACHE, key = "#id")
+//    }
+//    )
     public UserResponseDto updateUserById(long id, CreateUserDto dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id " + id));
@@ -87,11 +87,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = USER_BY_ID_CACHE, key = "#id"),
-            @CacheEvict(value = USER_WITH_CARDS_CACHE, key = "#id"),
-            @CacheEvict(value = USER_BY_EMAIL_CACHE, allEntries = true)
-    })
+//    @Caching(evict = {
+//            @CacheEvict(value = USER_BY_ID_CACHE, key = "#id"),
+//            @CacheEvict(value = USER_WITH_CARDS_CACHE, key = "#id"),
+//            @CacheEvict(value = USER_BY_EMAIL_CACHE, allEntries = true)
+//    })
     public void deleteUserById(long id) {
         User user = userRepository.findById(id)
                         .orElseThrow(() -> new UserNotFoundException("User with id: "+ id+ " not found"));
@@ -101,12 +101,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = USER_WITH_CARDS_CACHE, key = "#userId")
+//    @Cacheable(value = USER_WITH_CARDS_CACHE, key = "#userId")
     public UserWithCardResponseDto getUserWithCards(long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 
-        List<Card> cards = cardRepository.findCardsByUserIdNative(userId, Pageable.unpaged()).getContent();
+        List<Card> cards = cardRepository.findCardsByUserId(userId, Pageable.unpaged()).getContent();
 
         UserResponseDto userDto = userMapper.toDto(user);
         List<CardResponseDto> cardDtos = cardMapper.toDtoList(cards);
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    @CacheEvict(value = USER_WITH_CARDS_CACHE, key = "#userId")
+//    @CacheEvict(value = USER_WITH_CARDS_CACHE, key = "#userId")
     public void evictUserWithCardsCache(long userId) {
 
     }
