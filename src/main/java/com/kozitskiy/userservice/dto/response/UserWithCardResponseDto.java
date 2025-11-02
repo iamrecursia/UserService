@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +19,6 @@ public class UserWithCardResponseDto {
     private String name;
     private String surname;
     private String email;
-    private Date birthDate;
+    private LocalDate birthDate;
     private List<CardResponseDto> cards;
 }

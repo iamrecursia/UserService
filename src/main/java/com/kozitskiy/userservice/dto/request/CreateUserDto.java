@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -22,7 +23,7 @@ public class CreateUserDto {
 
     @NotNull(message = "Birth date is required")
     @Past(message = "Birth date must be in the past")
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")

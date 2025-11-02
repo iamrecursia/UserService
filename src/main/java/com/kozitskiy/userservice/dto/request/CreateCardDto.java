@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -28,5 +29,5 @@ public class CreateCardDto {
 
     @NotNull(message = "Expiration date is required")
     @Future(message = "Expiration date must be in the future")
-    private Date expirationDate;
+    private LocalDate expirationDate;
 }
