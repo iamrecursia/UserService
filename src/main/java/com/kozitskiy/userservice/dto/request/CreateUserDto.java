@@ -1,4 +1,4 @@
-package com.kozitskiy.userservice.dto;
+package com.kozitskiy.userservice.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Builder;
