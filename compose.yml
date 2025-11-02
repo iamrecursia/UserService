@@ -1,0 +1,32 @@
+services:
+  redis:
+    image: redis:7.2
+    container_name: redis-local
+    ports:
+      - "6379:6379"
+    volumes:
+      - cache:/data
+#    command:
+#      - redis-server --save 20 1 --loglevel warning --requirepass c2Zkc2Rmc2d3ZQ==
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: user_service
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+volumes:
+  cache:
+    driver: local
+  mysql_data:
+#docker compose up -d
+#docker compose down, если использовать -v стирается том
