@@ -1,6 +1,25 @@
-# Dockerfile
-FROM openjdk:21-jdk-slim
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+
 WORKDIR /app
-COPY target/UserService-0.0.1-SNAPSHOT.jar app.jar
+
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM openjdk:21-jdk-slim AS final
+
+RUN useradd -m -s /bin/bash appuser
+
+WORKDIR /app
+
+COPY --from=build /app/target/UserService-0.0.1-SNAPSHOT.jar /app/user-service.jar
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+CMD ["java", "-jar", "/app/user-service.jar"]
